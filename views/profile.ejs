@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .like-btn svg {
+      stroke: currentColor;
+      fill: none;
+      transition: fill 0.3s ease;
+    }
+    .like-btn.liked svg {
+      fill: red;
+      stroke: none;
+    }
+
+    .glass {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body class="bg-cover bg-center min-h-screen text-white" style="background-image: url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1950&q=80');">
+
+<!-- Header -->
+<header class="flex justify-between items-center mb-10 px-6 py-4 bg-black/60 backdrop-blur-md shadow-md">
+  <h1 class="text-4xl font-bold text-cyan-400 select-none">SparkBlog</h1>
+  <div class="flex gap-4">
+    <a href="/posts" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md transition">All Posts</a>
+    <a href="/home" class="bg-blue-700 hover:bg-blue-500 px-4 py-2 rounded-md transition">Home</a>
+    <a href="/connections" class="bg-green-700 hover:bg-green-500 px-4 py-2 rounded-md transition">Connections</a>
+    <a href="/" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md transition">Logout</a>
+  </div>
+</header>
+
+<!-- Profile Section -->
+<main class="px-6 max-w-6xl mx-auto">
+  <div class="glass p-8 rounded-xl shadow-xl mb-10">
+    <h2 class="text-3xl font-semibold mb-2">Hello, <%= user.username %> 👋</h2>
+    <p class="mb-6 text-zinc-300">Create a new post below.</p>
+
+    <form action="/post" method="post" class="space-y-3">
+      <textarea
+        name="content"
+        class="w-full p-3 rounded bg-zinc-800 border border-zinc-700 outline-none resize-none"
+        rows="3"
+        placeholder="What's on your mind?"
+        required
+      ></textarea>
+      <button type="submit" class="bg-blue-500 hover:bg-blue-600 px-5 py-2 rounded transition">Create New Post</button>
+    </form>
+  </div>
+
+  <!-- Posts Section -->
+  <h3 class="text-xl mb-4 text-zinc-300">
+    <%= posts && posts.length > 0 && posts[0].user._id.toString() !== user._id.toString() ? "All Posts" : "Your Posts" %>
+  </h3>
+
+  <div class="grid gap-6 sm:grid-cols-2">
+    <% posts.forEach(function(post) {
+      const isOwner = post.user._id.toString() === user._id.toString();
+      const hasLiked = post.likes.some(likeId => likeId.toString() === user._id.toString());
+    %>
+    <div class="glass border border-zinc-700 rounded-xl p-5 shadow-lg hover:shadow-2xl transition relative">
+      <div class="flex items-center mb-3">
+        <div
+          class="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-3 select-none"
+          title="<%= post.user.name %>"
+        >
+          <%= (post.user.username && post.user.username[0] ? post.user.username[0].toUpperCase() : '?') %>
+        </div>
+        <h4 class="text-blue-400 font-semibold">@<%= post.user.username %></h4>
+      </div>
+
+      <p class="text-sm mb-5 whitespace-pre-wrap text-white"><%= post.content %></p>
+
+      <div class="flex gap-5 justify-end items-center text-zinc-300 text-lg select-none">
+        <button
+          class="like-btn <%= hasLiked ? 'liked' : '' %>"
+          data-postid="<%= post._id %>"
+          aria-pressed="<%= hasLiked %>"
+          title="<%= hasLiked ? 'Unlike' : 'Like' %>"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 
+              2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 
+              4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 
+              22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </button>
+
+        <span id="like-count-<%= post._id %>" class="text-sm select-text"><%= post.likes.length %></span>
+
+        <% if (isOwner) { %>
+          <a href="/edit/<%= post._id %>" class="hover:text-yellow-400" title="Edit">✏️</a>
+          <a href="/delete/<%= post._id %>" class="hover:text-red-400" title="Delete" onclick="return confirm('Are you sure?');">🗑️</a>
+        <% } %>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="mt-20 text-center text-zinc-300 text-sm py-6 bg-black/70 backdrop-blur-md">
+  &copy; <%= new Date().getFullYear() %> SparkBlog. Made with ❤️ by You.
+</footer>
+
+<script>
+  document.querySelectorAll('.like-btn').forEach(button => {
+    button.addEventListener('click', async () => {
+      const postId = button.dataset.postid;
+      try {
+        const response = await fetch(`/post/${postId}/like`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Failed to like/unlike');
+
+        button.setAttribute('aria-pressed', data.liked);
+        button.classList.toggle('liked', data.liked);
+        button.title = data.liked ? "Unlike" : "Like";
+
+        document.getElementById(`like-count-${postId}`).textContent = data.likeCount;
+      } catch (error) {
+        alert(error.message);
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Edit Post</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glass {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body class="bg-cover bg-center min-h-screen text-white" style="background-image: url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1950&q=80');">
+
+<!-- Header -->
+<header class="flex justify-between items-center mb-10 px-6 py-4 bg-black/60 backdrop-blur-md shadow-md">
+  <h1 class="text-4xl font-bold text-cyan-400 select-none">SparkBlog</h1>
+  <div class="flex gap-4">
+    <a href="/posts" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md transition">All Posts</a>
+    <a href="/profile" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition">My Profile</a>
+    <a href="/" class="bg-blue-500 hover:bg-blue-400 px-4 py-2 rounded-md transition">Home</a>
+    <a href="/logout" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md transition">Logout</a>
+  </div>
+</header>
+
+<!-- Edit Post Form -->
+<main class="max-w-3xl mx-auto px-6">
+  <div class="glass p-8 rounded-xl shadow-xl">
+    <h2 class="text-3xl font-semibold mb-4 text-blue-400">Edit Your Post</h2>
+    <form action="/edit/<%= post._id %>" method="POST" class="space-y-4">
+      <textarea
+        name="content"
+        rows="5"
+        class="w-full p-4 bg-zinc-800 border border-zinc-700 rounded-md outline-none resize-none text-white"
+        required
+      ><%= post.content %></textarea>
+      <div class="flex gap-4">
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 px-5 py-2 rounded transition">Update</button>
+        <a href="/profile" class="bg-gray-600 hover:bg-gray-700 px-5 py-2 rounded transition">Cancel</a>
+      </div>
+    </form>
+  </div>
+</main>
+
+<!-- Footer -->
+<footer class="mt-20 text-center text-zinc-300 text-sm py-6 bg-black/70 backdrop-blur-md">
+  &copy; <%= new Date().getFullYear() %> SparkBlog. Made with ❤️ by You.
+</footer>
+
+</body>
+</html>

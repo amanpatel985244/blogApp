@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SparkBlog - Home</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .slideshow-container {
+      position: relative;
+      height: 80vh;
+      overflow: hidden;
+    }
+
+    .slideshow-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+      transition: opacity 2s ease-in-out;
+      opacity: 0;
+    }
+
+    .slideshow-bg.active {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body class="bg-zinc-900 text-white">
+
+  
+  <nav class="bg-zinc-800 px-6 py-4 shadow-md flex justify-between items-center">
+    <h1 class="text-3xl font-bold text-cyan-400">SparkBlog</h1>
+    <div class="space-x-4">
+      <a href="/login" class="text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Login</a>
+      <a href="/register" class="text-white bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Register</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section with Slideshow Background -->
+  <section class="slideshow-container flex items-center justify-center text-center text-white">
+    <!-- Background Slides -->
+    <div class="slideshow-bg active" style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1950&q=80');"></div>
+    <div class="slideshow-bg" style="background-image: url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1950&q=80');"></div>
+    <div class="slideshow-bg" style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1950&q=80');"></div>
+
+    <!-- Foreground Hero Content -->
+    <div class="hero-content bg-black bg-opacity-60 p-10 rounded-lg">
+      <h2 class="text-5xl font-bold text-cyan-300 mb-4">Welcome to SparkBlog</h2>
+      <p class="text-lg text-gray-300 mb-6">Share your thoughts, inspire others, and explore a world of stories.</p>
+      <a href="/login" class="bg-cyan-500 hover:bg-cyan-600 text-white px-6 py-3 rounded text-lg">Explore Blogs</a>
+    </div>
+  </section>
+
+<!-- Features Section -->
+<section class="py-16 px-6 bg-zinc-900 text-center">
+  <h3 class="text-3xl font-semibold mb-10 text-cyan-400">Why SparkBlog?</h3>
+  <div class="grid gap-10 sm:grid-cols-3 max-w-6xl mx-auto">
+    <div class="bg-zinc-800 p-6 rounded-lg shadow-lg">
+      <img src="https://img.icons8.com/color/96/blog.png" class="mx-auto mb-4" alt="Create">
+      <h4 class="text-xl font-semibold mb-2">Write Freely</h4>
+      <p class="text-gray-400">Express yourself without limits. Draft, post, and inspire readers globally.</p>
+    </div>
+    <div class="bg-zinc-800 p-6 rounded-lg shadow-lg">
+      <img src="https://img.icons8.com/color/96/open-book--v2.png" class="mx-auto mb-4" alt="Read">
+      <h4 class="text-xl font-semibold mb-2">Discover Stories</h4>
+      <p class="text-gray-400">Browse stories from around the world and gain new insights every day.</p>
+    </div>
+   <a href="/login" class="block">
+  <div class="bg-zinc-800 p-6 rounded-lg shadow-lg cursor-pointer hover:bg-zinc-700 transition">
+    <img src="https://img.icons8.com/color/96/conference-call.png" class="mx-auto mb-4" alt="Connect" />
+    <h4 class="text-xl font-semibold mb-2">Connect with Others</h4>
+    <p class="text-gray-400">Like, comment, and follow users who share your interests and ideas.</p>
+  </div>
+</a>
+
+  </div>
+</section>
+
+
+
+  <!-- Footer -->
+  <footer class="bg-zinc-800 text-center py-6 mt-10 text-gray-400">
+    &copy; <%= new Date().getFullYear() %> SparkBlog. All rights reserved.
+  </footer>
+
+  <!-- Background Slideshow Script -->
+  <script>
+    const slides = document.querySelectorAll(".slideshow-bg");
+    let current = 0;
+
+    setInterval(() => {
+      slides[current].classList.remove("active");
+      current = (current + 1) % slides.length;
+      slides[current].classList.add("active");
+    }, 3000);
+  </script>
+</body>
+</html> -->

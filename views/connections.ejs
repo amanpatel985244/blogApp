@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <title>Connections - SparkBlog</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glass {
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body class="bg-cover bg-center min-h-screen text-white" 
+  style="background-image: url('https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?auto=format&fit=crop&w=1950&q=80');">
+
+  <!-- Header -->
+  <header class="flex justify-between items-center mb-10 px-6 py-4 bg-black/60 backdrop-blur-md shadow-md">
+    <h1 class="text-4xl font-bold text-cyan-400 select-none">SparkBlog</h1>
+    <div class="flex gap-4">
+      <a href="/posts" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md transition">All Posts</a>
+      <a href="/home" class="bg-blue-700 hover:bg-blue-500 px-4 py-2 rounded-md transition">Home</a>
+      <a href="/profile" class="bg-green-700 hover:bg-green-500 px-4 py-2 rounded-md transition">My Profile</a>
+      <a href="/" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md transition">Logout</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="px-6 max-w-6xl mx-auto">
+
+    <div class="glass p-6 rounded-xl shadow-xl mb-10">
+      <h2 class="text-3xl font-semibold mb-4">All Users</h2>
+      <p class="mb-6 text-zinc-300">Logged in as <span class="font-semibold"><%= currentUser.username %></span></p>
+
+      <!-- Users grid -->
+      <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <% users.forEach(user => { %>
+          <div class="glass border border-zinc-700 rounded-xl p-5 shadow-lg hover:shadow-2xl transition flex flex-col justify-between">
+            <div>
+              <div
+                class="bg-blue-600 text-white rounded-full w-14 h-14 flex items-center justify-center font-bold mb-4 select-none text-2xl"
+                title="<%= user.name || 'No name' %>"
+              >
+                <%= (user.username && user.username[0] ? user.username[0].toUpperCase() : '?') %>
+              </div>
+              <h3 class="text-xl font-semibold text-cyan-300 mb-1">@<%= user.username %></h3>
+              <p class="text-zinc-300 mb-2"><%= user.username || "No name provided" %></p>
+              <p class="text-sm text-zinc-400 break-words"><%= user.email %></p>
+            </div>
+
+            <a href="/user/<%= user._id %>" 
+               class="mt-5 block bg-blue-500 hover:bg-blue-600 text-center py-2 rounded-md transition"
+            >View Profile</a>
+          </div>
+        <% }) %>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-20 text-center text-zinc-300 text-sm py-6 bg-black/70 backdrop-blur-md">
+    &copy; <%= new Date().getFullYear() %> SparkBlog. Made with ❤️ by You.
+  </footer>
+
+</body>
+</html>
