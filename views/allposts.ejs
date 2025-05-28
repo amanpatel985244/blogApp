@@ -28,12 +28,9 @@
 <header class="flex justify-between items-center mb-10 px-6 py-4 bg-black/60 backdrop-blur-md shadow-md">
   <h1 class="text-4xl font-bold text-cyan-400 select-none">SparkBlog</h1>
   <div class="flex gap-4">
-        <a href="/home" class="bg-blue-700 hover:bg-blue-500 px-4 py-2 rounded-md transition">Home</a>
-         <a href="/profile" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition">My Profile</a>
-             <a href="/connections" class="bg-green-700 hover:bg-green-500 px-4 py-2 rounded-md transition">Connections</a>
-    <!-- <a href="/posts" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded-md transition">All Posts</a> -->
-   
-
+    <a href="/home" class="bg-blue-700 hover:bg-blue-500 px-4 py-2 rounded-md transition">Home</a>
+    <a href="/profile" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md transition">My Profile</a>
+    <a href="/connections" class="bg-green-700 hover:bg-green-500 px-4 py-2 rounded-md transition">Connections</a>
     <a href="/" class="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-md transition">Logout</a>
   </div>
 </header>
@@ -45,18 +42,18 @@
   <!-- Posts Grid -->
   <div class="grid gap-6 sm:grid-cols-2">
     <% posts.forEach(function(post) {
-      const isOwner = post.user._id.toString() === user._id.toString();
-      const hasLiked = post.likes.some(likeId => likeId.toString() === user._id.toString());
+      const isOwner = post.user && user && post.user._id.toString() === user._id.toString();
+      const hasLiked = user && post.likes && post.likes.some(likeId => likeId.toString() === user._id.toString());
     %>
     <div class="glass border border-zinc-700 rounded-xl p-5 shadow-lg hover:shadow-2xl transition relative">
       <div class="flex items-center mb-3">
         <div
           class="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold mr-3 select-none"
-          title="<%= post.user.username %>"
+          title="<%= post.user?.username || 'Unknown' %>"
         >
-          <%= post.user.username.charAt(0).toUpperCase() %>
+          <%= post.user?.username ? post.user.username.charAt(0).toUpperCase() : '?' %>
         </div>
-        <h4 class="text-blue-400 font-semibold">@<%= post.user.username %></h4>
+        <h4 class="text-blue-400 font-semibold">@<%= post.user?.username || 'unknown' %></h4>
       </div>
 
       <p class="text-sm mb-5 whitespace-pre-wrap text-white"><%= post.content %></p>
