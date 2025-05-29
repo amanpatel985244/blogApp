@@ -11,20 +11,17 @@ dotenv.config(); // ✅ Load environment variables
 const app = express();
 
 // Debug: Confirm MONGO_URI is loaded
-console.log("MONGO_URI from .env:", process.env.MONGO_URI);
+console.log("MONGO_URI from .env:", process.env.MONGO_URI)
+  .then(() => console.log('✅ MongoDB Connected'))
+  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
 // Models
 const userModel = require("./models/user");
 const postModel = require("./models/post");
 
 // Connect to MongoDB Atlas
-mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+mongoose.connect(process.env.MONGO_URI);
+
 
 // View engine
 app.set("view engine", "ejs");
@@ -233,5 +230,8 @@ app.get("/user/:id", isLoggedIn, async (req, res) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`🚀 Server running on http://localhost:${PORT}`));
+const PORT = process.env.PORT || 8080;
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
