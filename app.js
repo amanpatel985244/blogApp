@@ -14,12 +14,8 @@ const app = express();
 console.log("MONGO_URI from .env:", process.env.MONGO_URI);
 
 // ✅ Connect to MongoDB Atlas with proper .then/.catch
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-  .then(() => console.log('✅ MongoDB Connected'))
-  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
+mongoose.connect(process.env.MONGO_URI); // Just this is enough now
+
 
 // Models
 const userModel = require("./models/user");
